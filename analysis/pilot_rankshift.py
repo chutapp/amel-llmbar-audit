@@ -24,8 +24,13 @@ import numpy as np
 from scipy import stats
 
 REPO = Path(__file__).resolve().parent.parent
-RESPONSES = REPO / "data" / "llmbar" / "pilot_responses.jsonl"
-OUT = REPO / "results" / "pilot_rankshift.json"
+# Default to v2 responses (sequential-batch design). Fall back to v1 if
+# v2 is missing; v1 is the flawed ICL-from-gold-labels design retained
+# only as a reproducibility audit trail.
+_V2 = REPO / "data" / "llmbar" / "pilot_v2_responses.jsonl"
+_V1 = REPO / "data" / "llmbar" / "pilot_responses.jsonl"
+RESPONSES = _V2 if _V2.exists() else _V1
+OUT = REPO / "results" / ("pilot_v2_rankshift.json" if RESPONSES == _V2 else "pilot_rankshift.json")
 OUT.parent.mkdir(parents=True, exist_ok=True)
 
 
