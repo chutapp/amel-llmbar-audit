@@ -1,0 +1,106 @@
+{
+  "n_rows": 3000,
+  "judges": [
+    "claude-haiku-4-5",
+    "gpt-4.1-nano",
+    "llama3.2:3b"
+  ],
+  "regimes": [
+    "fresh",
+    "batched"
+  ],
+  "accuracy": {
+    "claude-haiku-4-5": {
+      "fresh": {
+        "n": 500,
+        "n_parseable": 413,
+        "n_correct": 389,
+        "accuracy": 0.9419
+      },
+      "batched": {
+        "n": 500,
+        "n_parseable": 500,
+        "n_correct": 270,
+        "accuracy": 0.54
+      }
+    },
+    "gpt-4.1-nano": {
+      "fresh": {
+        "n": 500,
+        "n_parseable": 498,
+        "n_correct": 407,
+        "accuracy": 0.8173
+      },
+      "batched": {
+        "n": 500,
+        "n_parseable": 499,
+        "n_correct": 449,
+        "accuracy": 0.8998
+      }
+    },
+    "llama3.2:3b": {
+      "fresh": {
+        "n": 500,
+        "n_parseable": 500,
+        "n_correct": 298,
+        "accuracy": 0.596
+      },
+      "batched": {
+        "n": 500,
+        "n_parseable": 487,
+        "n_correct": 373,
+        "accuracy": 0.7659
+      }
+    }
+  },
+  "modal_flip": {
+    "claude-haiku-4-5": {
+      "n_items": 100,
+      "n_comparable": 92,
+      "n_ties": 8,
+      "n_flips": 44,
+      "flip_rate": 0.4783
+    },
+    "gpt-4.1-nano": {
+      "n_items": 100,
+      "n_comparable": 99,
+      "n_ties": 1,
+      "n_flips": 44,
+      "flip_rate": 0.4444
+    },
+    "llama3.2:3b": {
+      "n_items": 100,
+      "n_comparable": 98,
+      "n_ties": 2,
+      "n_flips": 37,
+      "flip_rate": 0.3776
+    }
+  },
+  "per_judge_spearman_fresh_vs_batched": {
+    "claude-haiku-4-5": {
+      "n_pairs": 97,
+      "rho": 0.0162,
+      "p": 0.8745830876940627
+    },
+    "gpt-4.1-nano": {
+      "n_pairs": 100,
+      "rho": 0.1912,
+      "p": 0.056701789269637266
+    },
+    "llama3.2:3b": {
+      "n_pairs": 100,
+      "rho": 0.1182,
+      "p": 0.24143839666255745
+    }
+  },
+  "top1_by_regime": {
+    "fresh": "claude-haiku-4-5",
+    "batched": "gpt-4.1-nano"
+  },
+  "decision_gate": {
+    "top1_changed": true,
+    "any_judge_flip_rate_ge_10pct": true,
+    "any_judge_spearman_rho_lt_0.85": true,
+    "commit_to_full_audit": true
+  }
+}
