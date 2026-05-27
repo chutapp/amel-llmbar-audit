@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite both this audit and the AMEL paper it extends."
+title: "AMEL audit of LLM-judge benchmarks"
+authors:
+  - family-names: Temkit
+    given-names: Sid-Ali
+    email: sid@chut.app
+    affiliation: chut.app
+abstract: >-
+  Operational follow-on to AMEL (Temkit, 2026). Audits LLMBar,
+  JudgeBench, and adjacent LLM-judge benchmarks under fresh-context
+  vs. AMEL-style batched-context administration; reports
+  rank-reshuffle in judge model orderings.
+date-released: 2026-05-27
+license: MIT
+repository-code: "https://github.com/chutapp/amel-llmbar-audit"
+keywords:
+  - llm-as-a-judge
+  - llm-evaluation
+  - benchmark-audit
+  - llmbar
+  - judgebench
+  - conversation-history
+references:
+  - type: article
+    title: "AMEL: Accumulated Message Effects on LLM Judgments"
+    authors:
+      - family-names: Temkit
+        given-names: Sid-Ali
+    year: 2026
+    journal: "arXiv preprint arXiv:2605.22714"
+    url: "https://arxiv.org/abs/2605.22714"

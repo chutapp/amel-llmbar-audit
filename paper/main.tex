@@ -1,0 +1,103 @@
+% AMEL audit of LLM-judge benchmarks
+% Working draft. Skeleton only; numbers and figures land after the pilot.
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[letterpaper,margin=0.75in,columnsep=0.35in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\newcommand{\xspace}{}
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+
+\title{Conversation-history bias reshuffles LLM-judge benchmark rankings:\\
+       an AMEL-driven audit of LLMBar and JudgeBench}
+
+\author{
+  Temkit Sid-Ali \\
+  chut.app \\
+  \texttt{sid@chut.app}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% Filled in after pilot + full audit.
+TODO: one-paragraph abstract once pilot returns.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+\citet{temkit2026amel} documented \textit{AMEL}, a small but
+consistent bias in LLM judges driven by accumulated conversation
+history: when prior turns in the conversation share a verdict
+polarity, the model's next verdict drifts in that direction. The
+operational implication is that batched evaluation pipelines (one
+conversation, many items) produce systematically different verdicts
+than fresh-context evaluation (one conversation per item).
+
+Most current LLM-judge benchmarks --- LLMBar
+\citep{zeng2023llmbar}, MT-Bench, JudgeBench --- do not standardise
+which administration regime is used. This paper asks whether that
+choice changes which judge model wins.
+
+TODO: contributions list once results are in.
+
+\section{Related Work}
+\label{sec:related}
+
+TODO: AMEL, LLMBar, JudgeBench, B-score, Hankache et al. on
+judge-bias audits.
+
+\section{Methodology}
+\label{sec:method}
+
+TODO: benchmark choice, judge model panel, fresh vs batched
+operationalisation, rank-shift metrics.
+
+\section{Pilot}
+\label{sec:pilot}
+
+TODO: 1-week pilot on LLMBar Natural subset, 3 judges, decision
+gate criteria, pilot results.
+
+\section{Full Audit}
+\label{sec:audit}
+
+TODO: pending pilot pass.
+
+\section{Discussion}
+
+TODO.
+
+\section{Limitations}
+
+TODO.
+
+\section{Conclusion}
+
+TODO.
+
+\section*{Reproducibility}
+All code and data are available at
+\url{https://github.com/chutapp/amel-llmbar-audit}. The
+conversation-construction framework is vendored from
+\texttt{chutapp/amel} (commit recorded in
+\texttt{src/VENDORED\_FROM.md}) and re-used unchanged so that the
+prior-conversation construction matches the original AMEL design.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
