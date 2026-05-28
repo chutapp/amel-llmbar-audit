@@ -121,7 +121,30 @@ beats five same-shape ones.
 | Files | `runners/run_rewardbench.py`, `data/rewardbench/`, `results/rewardbench.json` |
 | Cost | ~$100. |
 
-### Phase 5 -- paper writing (~1--2 weeks)
+### Phase 5 -- mitigation methods (the upgrade, ~$100--200, ~2 weeks)
+
+Documenting fragility is a critique-only paper. Documenting fragility
+*plus* showing at least one mitigation restores per-item agreement
+turns the same evidence base into a critique-and-method paper, which
+is the contribution shape reviewers most respect. This phase tests
+three candidate mitigations and picks the one with the best
+restore-agreement / cost ratio.
+
+| Item | Detail |
+|---|---|
+| Mitigation A: explicit ignore instruction | Prepend to each item: "Treat this item independently; do not let earlier judgments in this conversation influence your answer." Cheap, zero extra calls. |
+| Mitigation B: context reset every K items | Within a batched run, drop the conversation history every K = 5 items (so each window of 5 sees only its own prior 4 turns). Same total calls; tests whether the effect is reset-curable. |
+| Mitigation C: self-consistency re-ask | For items where the batched judge is uncertain (top-token probability < 0.7 if logprobs available, or rep-disagreement otherwise), re-issue the item in a fresh context and accept the fresh answer. |
+
+| Design | One subset (LLMBar Natural, the cheapest), 5 judges, 3 reps, each mitigation applied to batched. Compare per-item agreement with fresh to the un-mitigated batched baseline (phase 0). |
+| Files | `runners/run_mitigation_{a,b,c}.py`, `results/mitigation_compare.json` |
+| Cost | ~$100--200 across all three (Mitigation A is free in extra calls; B and C add ~2x batched cost). |
+
+**Phase 5 gate:**
+- At least one mitigation restores fresh-vs-batched agreement to within 10pp of the fresh-fresh noise floor (phase 1) → paper has a clear actionable fix. Lead with this in §8.
+- No mitigation works → paper is critique-only, mitigation results go into §9 as "what we tried, what failed." Still publishable; lower ceiling.
+
+### Phase 6 -- paper writing (~1--2 weeks)
 
 Outline:
 - §1 Introduction: judge benchmarks have proliferated; methodological assumptions inherited from human-rater protocols don't transfer cleanly.
@@ -131,9 +154,10 @@ Outline:
 - §5 The cancellation mechanism: phase 0.1 decomposition. Headline figure.
 - §6 Robustness: noise floor (phase 1), length curve (phase 2), Adversarial subsets (phase 3).
 - §7 Cross-benchmark: RewardBench (phase 4).
-- §8 Discussion: implications for how to read judge-benchmark scores.
-- §9 Limitations: judge panel breadth, single-subject (judges from 2 providers), no human comparator, no multi-rep variance decomposition.
-- §10 Practical recommendations: report fresh-vs-batched delta as part of any judge-benchmark score; standardise administration in the benchmark spec.
+- §8 Mitigation: phase 5 results; one method that works (if any) recommended.
+- §9 Discussion: implications for how to read judge-benchmark scores.
+- §10 Limitations: judge panel breadth, judges from 2 providers, no human comparator, no multi-rep variance decomposition.
+- §11 Practical recommendations: report fresh-vs-batched delta as part of any judge-benchmark score; standardise administration in the benchmark spec; if batched is used, apply the chosen mitigation.
 
 ## 4. Budget summary
 
@@ -144,11 +168,12 @@ Outline:
 | 2 | ~15 | 1h | ~65 |
 | 3 | ~300--500 | 6h | ~365--565 |
 | 4 | ~100 | 3h | ~465--665 |
-| **Total** | **~$500--700** | **~15h API + ~2 weeks analyst time** | |
+| 5 (mitigation) | ~100--200 | 4h | ~565--865 |
+| **Total** | **~$600--900** | **~20h API + ~3 weeks analyst time** | |
 
-Opus 4.6 dominates the bill. If cost is tight, drop Opus from
-phases 3 and 4 (Sonnet stays as the frontier-Anthropic judge);
-total drops to ~$250--350.
+Opus 4.6 dominates the bill across phases 3, 4, and 5. If cost is
+tight, drop Opus and use Sonnet as the frontier-Anthropic judge;
+total drops to ~$350--500.
 
 ## 5. Timeline
 
@@ -156,11 +181,13 @@ total drops to ~$250--350.
   reframing.
 - Week 2: phase 3 (Adversarial). First-draft results section.
 - Week 3: phase 4 (RewardBench). Cross-benchmark section.
-- Weeks 4--5: paper draft. Internal review by professor.
-- Week 6: revisions and arXiv submission.
+- Weeks 4--5: phase 5 (mitigation). Lead with whichever mitigation works.
+- Weeks 6--7: paper draft. Internal review by professor.
+- Week 8--9: revisions and arXiv submission.
 
-Six weeks from now to arXiv preprint is realistic if there are no
-surprises.
+~8--9 weeks from now to arXiv preprint, adding ~2--3 weeks over the
+critique-only version for the mitigation phase. Worth it for the
+critique-and-method framing.
 
 ## 6. Risk register
 
@@ -172,14 +199,16 @@ surprises.
 | Effect only appears at N=15 (phase 2) | low | medium | Reframe as long-context-fatigue + AMEL; cite both literatures. |
 | Adversarial subsets show no regime-dependence (phase 3) | low | low | Still informative: "the effect is orthogonal to the adversarial manipulations." |
 | RewardBench shows no regime-dependence (phase 4) | medium | medium | Reframe to "LLMBar-shape-specific"; narrower paper but still real. |
+| No mitigation works (phase 5) | medium | medium | Paper reverts to critique-only; mitigation results go in §9 as "what we tried, what failed." Lower ceiling but still publishable. |
+| Mitigation A (ignore instruction) works -- "fixed" by a prompt | low | low | Ironically good: cheap deployable fix; reviewer impact preserved. |
 | API model alias drift mid-study | low | medium | Capture deployed fingerprints at every phase boundary (as AMEL paper does). |
 
 ## 7. Out of scope for this paper
 
 - Mechanistic interpretability (the AMEL circuit). Separate paper.
-- Human-baseline comparison (do humans also drift between regimes on LLMBar?). Separate paper; would require Upwork annotators, ~$300, real coordination.
+- Human-baseline comparison (do humans also drift between regimes on LLMBar?). Separate paper; would require external annotators, ~$300, real coordination.
+- Downstream-consequences experiment (apply the 5 judges to a real model-selection task, show the winning model depends on regime). Nice-to-have, ~$50; deferred unless time allows late in the timeline.
 - Expanding the judge panel beyond 5 (e.g., Gemini, open-weight). Marginal addition; could be added in revision if reviewers ask.
-- Mitigation methods (instructing the judge to "ignore prior turns"; resetting context every N items). Operational follow-on; not needed to establish the phenomenon.
 
 ## 8. Concrete next actions (in order)
 
@@ -189,4 +218,5 @@ surprises.
 4. Re-share updated pilot writeup with professor; confirm reframing.
 5. If go: run phase 1 (noise floor), then phase 2 (length curve).
 6. If still go: launch phase 3 (Adversarial), then phase 4 (RewardBench).
-7. Draft paper concurrently with phases 3--4.
+7. Run phase 5 (mitigation) once the fragility picture is locked in.
+8. Draft paper concurrently with phases 3--5.
