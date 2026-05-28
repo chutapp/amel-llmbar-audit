@@ -1,0 +1,160 @@
+{
+  "n_rows": 3000,
+  "judges": [
+    "claude-haiku-4-5",
+    "claude-opus-4-6",
+    "claude-sonnet-4-6",
+    "gpt-4.1-nano",
+    "gpt-5.5"
+  ],
+  "regimes": [
+    "fresh",
+    "batched"
+  ],
+  "accuracy": {
+    "claude-haiku-4-5": {
+      "fresh": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 263,
+        "accuracy": 0.8767
+      },
+      "batched": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 165,
+        "accuracy": 0.55
+      }
+    },
+    "claude-opus-4-6": {
+      "fresh": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 283,
+        "accuracy": 0.9433
+      },
+      "batched": {
+        "n": 300,
+        "n_parseable": 297,
+        "n_correct": 279,
+        "accuracy": 0.9394
+      }
+    },
+    "claude-sonnet-4-6": {
+      "fresh": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 275,
+        "accuracy": 0.9167
+      },
+      "batched": {
+        "n": 300,
+        "n_parseable": 298,
+        "n_correct": 228,
+        "accuracy": 0.7651
+      }
+    },
+    "gpt-4.1-nano": {
+      "fresh": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 262,
+        "accuracy": 0.8733
+      },
+      "batched": {
+        "n": 300,
+        "n_parseable": 299,
+        "n_correct": 263,
+        "accuracy": 0.8796
+      }
+    },
+    "gpt-5.5": {
+      "fresh": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 285,
+        "accuracy": 0.95
+      },
+      "batched": {
+        "n": 300,
+        "n_parseable": 300,
+        "n_correct": 289,
+        "accuracy": 0.9633
+      }
+    }
+  },
+  "modal_flip": {
+    "claude-haiku-4-5": {
+      "n_items": 100,
+      "n_comparable": 100,
+      "n_ties": 0,
+      "n_flips": 50,
+      "flip_rate": 0.5
+    },
+    "claude-opus-4-6": {
+      "n_items": 100,
+      "n_comparable": 97,
+      "n_ties": 3,
+      "n_flips": 50,
+      "flip_rate": 0.5155
+    },
+    "claude-sonnet-4-6": {
+      "n_items": 100,
+      "n_comparable": 98,
+      "n_ties": 2,
+      "n_flips": 45,
+      "flip_rate": 0.4592
+    },
+    "gpt-4.1-nano": {
+      "n_items": 100,
+      "n_comparable": 100,
+      "n_ties": 0,
+      "n_flips": 45,
+      "flip_rate": 0.45
+    },
+    "gpt-5.5": {
+      "n_items": 100,
+      "n_comparable": 100,
+      "n_ties": 0,
+      "n_flips": 46,
+      "flip_rate": 0.46
+    }
+  },
+  "per_judge_spearman_fresh_vs_batched": {
+    "claude-haiku-4-5": {
+      "n_pairs": 100,
+      "rho": -0.0215,
+      "p": 0.8315080398422616
+    },
+    "claude-opus-4-6": {
+      "n_pairs": 100,
+      "rho": 0.0846,
+      "p": 0.4023977085966971
+    },
+    "claude-sonnet-4-6": {
+      "n_pairs": 100,
+      "rho": -0.009,
+      "p": 0.9288200049996101
+    },
+    "gpt-4.1-nano": {
+      "n_pairs": 100,
+      "rho": 0.185,
+      "p": 0.06537682248058412
+    },
+    "gpt-5.5": {
+      "n_pairs": 100,
+      "rho": 0.0707,
+      "p": 0.48460405857501787
+    }
+  },
+  "top1_by_regime": {
+    "fresh": "gpt-5.5",
+    "batched": "gpt-5.5"
+  },
+  "decision_gate": {
+    "top1_changed": false,
+    "any_judge_flip_rate_ge_10pct": true,
+    "any_judge_spearman_rho_lt_0.85": true,
+    "commit_to_full_audit": true
+  }
+}
